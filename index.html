@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Software Testing Types Animation</title>
+  
+  <!-- React & ReactDOM -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+  
+  <style>
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: #f0f2f5;
+      padding: 20px;
+    }
+    
+    #root {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    
+    .animate-pulse {
+      animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    
+    .animate-bounce {
+      animation: bounce 1s infinite;
+    }
+    
+    .animate-ping {
+      animation: ping 1.5s cubic-bezier(0, 0, 0.2, 1) infinite;
+    }
+    
+    @keyframes pulse {
+      0%, 100% {
+        opacity: 1;
+      }
+      50% {
+        opacity: .5;
+      }
+    }
+    
+    @keyframes bounce {
+      0%, 100% {
+        transform: translateY(-5%);
+        animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+      }
+      50% {
+        transform: translateY(0);
+        animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+      }
+    }
+    
+    @keyframes ping {
+      75%, 100% {
+        transform: scale(1.5);
+        opacity: 0;
+      }
+    }
+    
+    .origin-left {
+      transform-origin: left;
+    }
+    
+    .origin-right {
+      transform-origin: right;
+    }
+  </style>
+</head>
+<body>
+  <div id="root"></div>
+  
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+    
+    const TestingAnimation = () => {
+      const [activePhase, setActivePhase] = useState(0);
+      const [isPlaying, setIsPlaying] = useState(true);
+      const [showDescription, setShowDescription] = useState(true);
+      
+      // Handle animation cycling
+      useEffect(() => {
+        let timer;
+        if (isPlaying) {
+          timer = setTimeout(() => {
+            setActivePhase((prev) => (prev + 1) % 5);
+          }, 4000);
+        }
+        return () => clearTimeout(timer);
+      }, [activePhase, isPlaying]);
+
+      const phases = [
+        {
+          name: "Code-level Testing",
+          color: "#4285F4",
+          lightColor: "#d0e0fc",
+          icon: "𝑓( )",
+          description: "Tests individual functions and code units in isolation. Finds basic logic errors and ensures code works as intended. Like checking if each LEGO piece is properly formed before building.",
+          animation: (
+            <div className="relative w-64 h-64 mx-auto">
+              <div className="absolute inset-0 flex items-center justify-center">
+                <div className="bg-blue-100 w-40 h-40 rounded-lg border-2 border-blue-500 flex items-center justify-center text-blue-800 font-mono">
+                  <div className="text-center">
+                    <div className="animate-pulse text-xl">function add(a,b) {"{"}</div>
+                    <div className="animate-pulse text-xl mt-2">  return a+b;</div>
+                    <div className="animate-pulse text-xl mt-2">{"}"}</div>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full animate-bounce text-xs">
+                ✓ TEST PASSED
+              </div>
+            </div>
+          )
+        },
+        {
+          name: "Integration Testing",
+          color: "#0F9D58",
+          lightColor: "#d0f0e0",
+          icon: "🔄",
+          description: "Tests how components work together as a system. Ensures different parts can communicate properly. Like making sure gears in a machine mesh correctly.",
+          animation: (
+            <div className="relative w-64 h-64 mx-auto">
+              <div className="absolute top-6 left-6 bg-green-200 w-24 h-24 rounded-lg border-2 border-green-600 flex items-center justify-center">
+                <div className="text-center text-green-800 text-xs">
+                  Database
+                </div>
+              </div>
+              <div className="absolute bottom-6 right-6 bg-blue-200 w-24 h-24 rounded-lg border-2 border-blue-600 flex items-center justify-center">
+                <div className="text-center text-blue-800 text-xs">
+                  User Interface
+                </div>
+              </div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-200 w-20 h-20 rounded-lg border-2 border-yellow-600 flex items-center justify-center z-10">
+                <div className="text-center text-yellow-800 text-xs">
+                  API
+                </div>
+              </div>
+              <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
+                <path d="M50,50 L130,130" stroke="#666" strokeWidth="2" strokeDasharray="6,3">
+                  <animate attributeName="stroke-dashoffset" from="0" to="18" dur="1s" repeatCount="indefinite" />
+                </path>
+                <path d="M130,130 L210,210" stroke="#666" strokeWidth="2" strokeDasharray="6,3">
+                  <animate attributeName="stroke-dashoffset" from="0" to="18" dur="1s" repeatCount="indefinite" />
+                </path>
+              </svg>
+            </div>
+          )
+        },
+        {
+          name: "API Testing",
+          color: "#F4B400",
+          lightColor: "#fcefd0",
+          icon: "API",
+          description: "Tests data exchange between systems. Ensures correct request/response patterns between components. Like testing if messages between two people are delivered accurately.",
+          animation: (
+            <div className="relative w-64 h-64 mx-auto">
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-purple-200 w-20 h-32 rounded-lg border-2 border-purple-600 flex items-center justify-center">
+                <div className="text-center text-purple-800 text-xs">
+                  Client App
+                </div>
+              </div>
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-200 w-20 h-32 rounded-lg border-2 border-green-600 flex items-center justify-center">
+                <div className="text-center text-green-800 text-xs">
+                  Server
+                </div>
+              </div>
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
+                <div className="bg-yellow-100 px-3 py-1 rounded-md border border-yellow-400 text-xs mb-4 animate-bounce origin-left">
+                  GET /data
+                </div>
+                <div className="bg-blue-100 px-3 py-1 rounded-md border border-blue-400 text-xs mt-4 animate-bounce origin-right" style={{animationDelay: "0.5s"}}>
+                  {"{ status: 200 }"}
+                </div>
+              </div>
+            </div>
+          )
+        },
+        {
+          name: "UI Testing",
+          color: "#DB4437",
+          lightColor: "#f8d0d0",
+          icon: "👆",
+          description: "Tests what users actually see and interact with. Simulates real user behavior to ensure a good experience. Like having someone test drive a car before selling it.",
+          animation: (
+            <div className="relative w-64 h-64 mx-auto">
+              <div className="bg-gray-100 w-48 h-56 mx-auto rounded-xl border-2 border-gray-400 overflow-hidden">
+                <div className="bg-blue-500 w-full h-8 flex items-center px-2">
+                  <div className="text-white text-xs">My Application</div>
+                </div>
+                <div className="p-3">
+                  <div className="mb-2 text-xs">Username</div>
+                  <div className="border border-gray-300 rounded px-2 py-1 mb-4 bg-white text-xs">test@example.com</div>
+                  <div className="mb-2 text-xs">Password</div>
+                  <div className="border border-gray-300 rounded px-2 py-1 mb-4 bg-white text-xs">••••••••</div>
+                  <button className="bg-blue-500 text-white text-xs rounded px-3 py-1 hover:bg-blue-600 focus:ring">
+                    Login
+                  </button>
+                  <div className="absolute animate-ping w-3 h-3 bg-red-500 rounded-full" style={{ top: "135px", left: "165px", animationDuration: "1.5s" }}>
+                  </div>
+                </div>
+              </div>
+              <div className="absolute right-8 bottom-8 transform rotate-12">
+                <div className="text-xl">👆</div>
+                <svg className="w-8 h-8" viewBox="0 0 24 24">
+                  <path fill="none" stroke="#666" strokeWidth="2" d="M0,0 C3,5 5,8 5,10" transform="translate(6,5)">
+                    <animate attributeName="d" values="M0,0 C3,5 5,8 5,10; M0,0 C1,2 2,5 3,8; M0,0 C3,5 5,8 5,10" dur="2s" repeatCount="indefinite" />
+                  </path>
+                </svg>
+              </div>
+            </div>
+          )
+        },
+        {
+          name: "Code Analysis",
+          color: "#7B1FA2",
+          lightColor: "#ebd0f0",
+          icon: "🔍",
+          description: "Reviews code quality without actually running it. Finds potential problems, security issues, and enforces coding standards. Like having an editor review a book for grammar and style.",
+          animation: (
+            <div className="relative w-64 h-64 mx-auto">
+              <div className="absolute inset-0 m-4 bg-gray-100 rounded-lg border border-gray-300 overflow-hidden font-mono text-xs p-2">
+                <div><span className="text-blue-600">function</span> <span className="text-green-600">calculateTotal</span>(<span className="text-orange-600">items</span>) {"{"}</div>
+                <div className="pl-4"><span className="text-blue-600">let</span> total = <span className="text-purple-600">0</span>;</div>
+                <div className="pl-4"><span className="text-red-600">// Warning: uninitialized variable</span></div>
+                <div className="pl-4"><span className="text-blue-600">let</span> taxRate;</div>
+                <div className="pl-4"><span className="text-blue-600">for</span>(<span className="text-blue-600">let</span> i=<span className="text-purple-600">0</span>; i&lt;items.length; i++) {"{"}</div>
+                <div className="pl-8">total += items[i].price;</div>
+                <div className="pl-4">{"}"}</div>
+                <div className="pl-4"><span className="text-red-600">// Error: taxRate might be undefined</span></div>
+                <div className="pl-4"><span className="text-blue-600">return</span> total * (<span className="text-purple-600">1</span> + taxRate);</div>
+                <div>{"}"}</div>
+              </div>
+              <div className="absolute top-12 right-8 animate-pulse">
+                <div className="text-2xl">🔍</div>
+              </div>
+              <div className="absolute top-16 right-8 bg-red-100 border border-red-500 rounded-md px-2 py-1 text-xs text-red-700 animate-bounce" style={{animationDuration: "2s"}}>
+                2 issues found
+              </div>
+            </div>
+          )
+        }
+      ];
+
+      const currentPhase = phases[activePhase];
+
+      return (
+        <div className="bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto">
+          <h1 className="text-2xl font-bold text-center mb-2">Software Testing Types</h1>
+          <p className="text-sm text-center text-gray-500 mb-6">Click on a testing type to see it in action, or let the animation play</p>
+
+          {/* Testing type navigation */}
+          <div className="flex justify-center mb-6 flex-wrap gap-2">
+            {phases.map((phase, index) => (
+              <button 
+                key={index}
+                className={`px-3 py-2 rounded-lg text-sm font-medium transition duration-200 ${activePhase === index 
+                  ? 'text-white' 
+                  : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
+                style={{ 
+                  backgroundColor: activePhase === index ? phase.color : undefined,
+                  borderLeft: `4px solid ${phase.color}`
+                }}
+                onClick={() => {
+                  setActivePhase(index);
+                  setIsPlaying(false);
+                }}
+              >
+                {phase.name}
+              </button>
+            ))}
+          </div>
+
+          {/* Animation control */}
+          <div className="flex justify-center mb-4">
+            <button 
+              className={`px-4 py-2 rounded-full ${isPlaying ? 'bg-gray-200' : 'bg-blue-500 text-white'}`}
+              onClick={() => setIsPlaying(!isPlaying)}
+            >
+              {isPlaying ? '⏸️ Pause' : '▶️ Play'}
+            </button>
+            <button 
+              className="px-4 py-2 rounded-full ml-2 bg-gray-200"
+              onClick={() => setShowDescription(!showDescription)}
+            >
+              {showDescription ? '🙈 Hide Info' : '📝 Show Info'}
+            </button>
+          </div>
+
+          {/* Main animation area */}
+          <div 
+            className="border-4 rounded-xl p-4 mb-4 transition-colors duration-500 overflow-hidden"
+            style={{ borderColor: currentPhase.color, backgroundColor: currentPhase.lightColor }}
+          >
+            <div className="flex items-center justify-between mb-4">
+              <h2 className="text-xl font-bold" style={{ color: currentPhase.color }}>
+                {currentPhase.name}
+              </h2>
+              <div 
+                className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                style={{ backgroundColor: currentPhase.color, color: 'white' }}
+              >
+                {currentPhase.icon}
+              </div>
+            </div>
+
+            {/* Animation container */}
+            <div className="h-64 relative">
+              {currentPhase.animation}
+            </div>
+          </div>
+
+          {/* Description */}
+          {showDescription && (
+            <div 
+              className="bg-gray-50 rounded-lg p-4 transition-all duration-500 overflow-hidden"
+              style={{ maxHeight: showDescription ? '200px' : '0px', opacity: showDescription ? 1 : 0 }}
+            >
+              <h3 className="font-medium mb-2">What is {currentPhase.name}?</h3>
+              <p className="text-sm text-gray-700">{currentPhase.description}</p>
+            </div>
+          )}
+        </div>
+      );
+    };
+    
+    // Render the app
+    ReactDOM.render(<TestingAnimation />, document.getElementById('root'));
+  </script>
+  
+  <!-- Babel for JSX -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.21.2/babel.min.js"></script>
+</body>
+</html>
