@@ -10,13 +10,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
   
   <!-- Tailwind CSS -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css" rel="stylesheet">
   
   <style>
     body {
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-      background-color: #f0f2f5;
+      background-color: #f5f7fa;
       padding: 20px;
+      margin: 0;
     }
     
     #root {
@@ -70,9 +71,72 @@
     .origin-right {
       transform-origin: right;
     }
+    
+    .transition-colors {
+      transition-property: background-color, border-color, color, fill, stroke;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 500ms;
+    }
+    
+    .transition-all {
+      transition-property: all;
+      transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+      transition-duration: 500ms;
+    }
+    
+    /* Custom shadow for better depth */
+    .custom-shadow {
+      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+    }
+    
+    /* Enhance button styling */
+    .tab-button {
+      transition: all 0.2s;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .tab-button:after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      height: 0;
+      background-color: rgba(255, 255, 255, 0.2);
+      transition: all 0.2s;
+      z-index: -1;
+    }
+    
+    .tab-button:hover:after {
+      height: 100%;
+    }
+    
+    /* Enhance animation container */
+    .animation-container {
+      position: relative;
+      border-radius: 12px;
+      overflow: hidden;
+      transition: all 0.3s ease;
+    }
+    
+    /* Animated dash lines */
+    .dashed-line {
+      stroke-dasharray: 6, 3;
+      animation: dashOffset 1s linear infinite;
+    }
+    
+    @keyframes dashOffset {
+      from {
+        stroke-dashoffset: 0;
+      }
+      to {
+        stroke-dashoffset: 18;
+      }
+    }
   </style>
 </head>
-<body>
+<body class="bg-gray-100">
   <div id="root"></div>
   
   <script type="text/babel">
@@ -98,13 +162,13 @@
         {
           name: "Code-level Testing",
           color: "#4285F4",
-          lightColor: "#d0e0fc",
+          lightColor: "#e8f0fe",
           icon: "𝑓( )",
           description: "Tests individual functions and code units in isolation. Finds basic logic errors and ensures code works as intended. Like checking if each LEGO piece is properly formed before building.",
           animation: (
             <div className="relative w-64 h-64 mx-auto">
               <div className="absolute inset-0 flex items-center justify-center">
-                <div className="bg-blue-100 w-40 h-40 rounded-lg border-2 border-blue-500 flex items-center justify-center text-blue-800 font-mono">
+                <div className="bg-blue-100 w-40 h-40 rounded-lg border-2 border-blue-500 flex items-center justify-center text-blue-800 font-mono shadow-md">
                   <div className="text-center">
                     <div className="animate-pulse text-xl">function add(a,b) {"{"}</div>
                     <div className="animate-pulse text-xl mt-2">  return a+b;</div>
@@ -112,7 +176,7 @@
                   </div>
                 </div>
               </div>
-              <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full animate-bounce text-xs">
+              <div className="absolute top-2 right-2 bg-green-500 text-white px-2 py-1 rounded-full animate-bounce text-xs shadow-md">
                 ✓ TEST PASSED
               </div>
             </div>
@@ -121,33 +185,29 @@
         {
           name: "Integration Testing",
           color: "#0F9D58",
-          lightColor: "#d0f0e0",
+          lightColor: "#e6f4ea",
           icon: "🔄",
           description: "Tests how components work together as a system. Ensures different parts can communicate properly. Like making sure gears in a machine mesh correctly.",
           animation: (
             <div className="relative w-64 h-64 mx-auto">
-              <div className="absolute top-6 left-6 bg-green-200 w-24 h-24 rounded-lg border-2 border-green-600 flex items-center justify-center">
-                <div className="text-center text-green-800 text-xs">
+              <div className="absolute top-6 left-6 bg-green-200 w-24 h-24 rounded-lg border-2 border-green-600 flex items-center justify-center shadow-md">
+                <div className="text-center text-green-800 text-xs font-medium">
                   Database
                 </div>
               </div>
-              <div className="absolute bottom-6 right-6 bg-blue-200 w-24 h-24 rounded-lg border-2 border-blue-600 flex items-center justify-center">
-                <div className="text-center text-blue-800 text-xs">
+              <div className="absolute bottom-6 right-6 bg-blue-200 w-24 h-24 rounded-lg border-2 border-blue-600 flex items-center justify-center shadow-md">
+                <div className="text-center text-blue-800 text-xs font-medium">
                   User Interface
                 </div>
               </div>
-              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-200 w-20 h-20 rounded-lg border-2 border-yellow-600 flex items-center justify-center z-10">
-                <div className="text-center text-yellow-800 text-xs">
+              <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-yellow-200 w-20 h-20 rounded-lg border-2 border-yellow-600 flex items-center justify-center z-10 shadow-md">
+                <div className="text-center text-yellow-800 text-xs font-medium">
                   API
                 </div>
               </div>
               <svg className="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
-                <path d="M50,50 L130,130" stroke="#666" strokeWidth="2" strokeDasharray="6,3">
-                  <animate attributeName="stroke-dashoffset" from="0" to="18" dur="1s" repeatCount="indefinite" />
-                </path>
-                <path d="M130,130 L210,210" stroke="#666" strokeWidth="2" strokeDasharray="6,3">
-                  <animate attributeName="stroke-dashoffset" from="0" to="18" dur="1s" repeatCount="indefinite" />
-                </path>
+                <path d="M50,50 L130,130" stroke="#666" strokeWidth="2" className="dashed-line" />
+                <path d="M130,130 L210,210" stroke="#666" strokeWidth="2" className="dashed-line" />
               </svg>
             </div>
           )
@@ -155,26 +215,26 @@
         {
           name: "API Testing",
           color: "#F4B400",
-          lightColor: "#fcefd0",
+          lightColor: "#fef7e0",
           icon: "API",
           description: "Tests data exchange between systems. Ensures correct request/response patterns between components. Like testing if messages between two people are delivered accurately.",
           animation: (
             <div className="relative w-64 h-64 mx-auto">
-              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-purple-200 w-20 h-32 rounded-lg border-2 border-purple-600 flex items-center justify-center">
-                <div className="text-center text-purple-800 text-xs">
+              <div className="absolute left-0 top-1/2 transform -translate-y-1/2 bg-purple-200 w-20 h-32 rounded-lg border-2 border-purple-600 flex items-center justify-center shadow-md">
+                <div className="text-center text-purple-800 text-xs font-medium">
                   Client App
                 </div>
               </div>
-              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-200 w-20 h-32 rounded-lg border-2 border-green-600 flex items-center justify-center">
-                <div className="text-center text-green-800 text-xs">
+              <div className="absolute right-0 top-1/2 transform -translate-y-1/2 bg-green-200 w-20 h-32 rounded-lg border-2 border-green-600 flex items-center justify-center shadow-md">
+                <div className="text-center text-green-800 text-xs font-medium">
                   Server
                 </div>
               </div>
               <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center">
-                <div className="bg-yellow-100 px-3 py-1 rounded-md border border-yellow-400 text-xs mb-4 animate-bounce origin-left">
+                <div className="bg-yellow-100 px-3 py-1 rounded-md border border-yellow-400 text-xs mb-4 animate-bounce origin-left shadow-sm font-medium">
                   GET /data
                 </div>
-                <div className="bg-blue-100 px-3 py-1 rounded-md border border-blue-400 text-xs mt-4 animate-bounce origin-right" style={{animationDelay: "0.5s"}}>
+                <div className="bg-blue-100 px-3 py-1 rounded-md border border-blue-400 text-xs mt-4 animate-bounce origin-right shadow-sm font-medium" style={{animationDelay: "0.5s"}}>
                   {"{ status: 200 }"}
                 </div>
               </div>
@@ -184,21 +244,21 @@
         {
           name: "UI Testing",
           color: "#DB4437",
-          lightColor: "#f8d0d0",
+          lightColor: "#fce8e6",
           icon: "👆",
           description: "Tests what users actually see and interact with. Simulates real user behavior to ensure a good experience. Like having someone test drive a car before selling it.",
           animation: (
             <div className="relative w-64 h-64 mx-auto">
-              <div className="bg-gray-100 w-48 h-56 mx-auto rounded-xl border-2 border-gray-400 overflow-hidden">
+              <div className="bg-gray-100 w-48 h-56 mx-auto rounded-xl border-2 border-gray-400 overflow-hidden shadow-lg">
                 <div className="bg-blue-500 w-full h-8 flex items-center px-2">
-                  <div className="text-white text-xs">My Application</div>
+                  <div className="text-white text-xs font-medium">My Application</div>
                 </div>
                 <div className="p-3">
-                  <div className="mb-2 text-xs">Username</div>
+                  <div className="mb-2 text-xs font-medium">Username</div>
                   <div className="border border-gray-300 rounded px-2 py-1 mb-4 bg-white text-xs">test@example.com</div>
-                  <div className="mb-2 text-xs">Password</div>
+                  <div className="mb-2 text-xs font-medium">Password</div>
                   <div className="border border-gray-300 rounded px-2 py-1 mb-4 bg-white text-xs">••••••••</div>
-                  <button className="bg-blue-500 text-white text-xs rounded px-3 py-1 hover:bg-blue-600 focus:ring">
+                  <button className="bg-blue-500 text-white text-xs rounded px-3 py-1 hover:bg-blue-600 focus:ring shadow-sm">
                     Login
                   </button>
                   <div className="absolute animate-ping w-3 h-3 bg-red-500 rounded-full" style={{ top: "135px", left: "165px", animationDuration: "1.5s" }}>
@@ -219,12 +279,12 @@
         {
           name: "Code Analysis",
           color: "#7B1FA2",
-          lightColor: "#ebd0f0",
+          lightColor: "#f3e5f5",
           icon: "🔍",
           description: "Reviews code quality without actually running it. Finds potential problems, security issues, and enforces coding standards. Like having an editor review a book for grammar and style.",
           animation: (
             <div className="relative w-64 h-64 mx-auto">
-              <div className="absolute inset-0 m-4 bg-gray-100 rounded-lg border border-gray-300 overflow-hidden font-mono text-xs p-2">
+              <div className="absolute inset-0 m-4 bg-gray-100 rounded-lg border border-gray-300 overflow-hidden font-mono text-xs p-2 shadow-md">
                 <div><span className="text-blue-600">function</span> <span className="text-green-600">calculateTotal</span>(<span className="text-orange-600">items</span>) {"{"}</div>
                 <div className="pl-4"><span className="text-blue-600">let</span> total = <span className="text-purple-600">0</span>;</div>
                 <div className="pl-4"><span className="text-red-600">// Warning: uninitialized variable</span></div>
@@ -239,7 +299,7 @@
               <div className="absolute top-12 right-8 animate-pulse">
                 <div className="text-2xl">🔍</div>
               </div>
-              <div className="absolute top-16 right-8 bg-red-100 border border-red-500 rounded-md px-2 py-1 text-xs text-red-700 animate-bounce" style={{animationDuration: "2s"}}>
+              <div className="absolute top-16 right-8 bg-red-100 border border-red-500 rounded-md px-2 py-1 text-xs text-red-700 animate-bounce shadow-sm" style={{animationDuration: "2s"}}>
                 2 issues found
               </div>
             </div>
@@ -250,8 +310,8 @@
       const currentPhase = phases[activePhase];
 
       return (
-        <div className="bg-white rounded-xl shadow-lg p-6 max-w-3xl mx-auto">
-          <h1 className="text-2xl font-bold text-center mb-2">Software Testing Types</h1>
+        <div className="bg-white rounded-xl shadow-xl p-6 max-w-3xl mx-auto my-8 custom-shadow">
+          <h1 className="text-3xl font-bold text-center mb-2 bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">Software Testing Types</h1>
           <p className="text-sm text-center text-gray-500 mb-6">Click on a testing type to see it in action, or let the animation play</p>
 
           {/* Testing type navigation */}
@@ -259,8 +319,8 @@
             {phases.map((phase, index) => (
               <button 
                 key={index}
-                className={`px-3 py-2 rounded-lg text-sm font-medium transition duration-200 ${activePhase === index 
-                  ? 'text-white' 
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition duration-200 tab-button ${activePhase === index 
+                  ? 'text-white shadow-md' 
                   : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}
                 style={{ 
                   backgroundColor: activePhase === index ? phase.color : undefined,
@@ -279,13 +339,13 @@
           {/* Animation control */}
           <div className="flex justify-center mb-4">
             <button 
-              className={`px-4 py-2 rounded-full ${isPlaying ? 'bg-gray-200' : 'bg-blue-500 text-white'}`}
+              className={`px-4 py-2 rounded-full transition duration-200 shadow-md ${isPlaying ? 'bg-gray-200 hover:bg-gray-300' : 'bg-blue-500 text-white hover:bg-blue-600'}`}
               onClick={() => setIsPlaying(!isPlaying)}
             >
               {isPlaying ? '⏸️ Pause' : '▶️ Play'}
             </button>
             <button 
-              className="px-4 py-2 rounded-full ml-2 bg-gray-200"
+              className="px-4 py-2 rounded-full ml-2 bg-gray-200 hover:bg-gray-300 transition duration-200 shadow-md"
               onClick={() => setShowDescription(!showDescription)}
             >
               {showDescription ? '🙈 Hide Info' : '📝 Show Info'}
@@ -294,7 +354,7 @@
 
           {/* Main animation area */}
           <div 
-            className="border-4 rounded-xl p-4 mb-4 transition-colors duration-500 overflow-hidden"
+            className="border-4 rounded-xl p-4 mb-4 transition-colors duration-500 overflow-hidden animation-container shadow-lg"
             style={{ borderColor: currentPhase.color, backgroundColor: currentPhase.lightColor }}
           >
             <div className="flex items-center justify-between mb-4">
@@ -302,7 +362,7 @@
                 {currentPhase.name}
               </h2>
               <div 
-                className="w-12 h-12 rounded-full flex items-center justify-center text-2xl"
+                className="w-12 h-12 rounded-full flex items-center justify-center text-2xl shadow-md"
                 style={{ backgroundColor: currentPhase.color, color: 'white' }}
               >
                 {currentPhase.icon}
@@ -318,13 +378,17 @@
           {/* Description */}
           {showDescription && (
             <div 
-              className="bg-gray-50 rounded-lg p-4 transition-all duration-500 overflow-hidden"
+              className="bg-gray-50 rounded-lg p-4 shadow-md transition-all duration-500 overflow-hidden"
               style={{ maxHeight: showDescription ? '200px' : '0px', opacity: showDescription ? 1 : 0 }}
             >
               <h3 className="font-medium mb-2">What is {currentPhase.name}?</h3>
               <p className="text-sm text-gray-700">{currentPhase.description}</p>
             </div>
           )}
+          
+          <div className="mt-8 text-center text-xs text-gray-400">
+            Created to help understand software testing types
+          </div>
         </div>
       );
     };
